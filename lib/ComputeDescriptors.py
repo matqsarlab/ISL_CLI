@@ -11,14 +11,11 @@ from lib.helper_functions import (
     calc_mopac_desc,
 )
 from lib.run_software_calc import alva_desc, run_mop, ALVA_DESC_N
+from lib.constants import LOG_N, BASE_DIR_P
 from pathlib import Path
 from functools import cached_property
 from contextlib import chdir
 import logging
-
-
-LOG_N = "log.log"
-BASE_DIR = Path.cwd()
 
 
 class ComputeDescriptors:
@@ -61,7 +58,7 @@ class ComputeDescriptors:
 
     def _run_optimization(self) -> None:
         df = self.smi_df
-        PREDICTIONS_DIR = BASE_DIR / self.output_dir
+        PREDICTIONS_DIR = BASE_DIR_P / self.output_dir
         for i, smi in enumerate(df.index):
             canon_smi = convert_to_canonical_smiles(smi)
             print(f"\ninput SMILES: {smi}\ncanon SMILES: {canon_smi}")

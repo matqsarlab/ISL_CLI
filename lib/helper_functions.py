@@ -4,8 +4,7 @@ import json
 from datetime import date
 from typing import Generator
 from pathlib import Path
-
-DIR_UP_PATH = Path(__file__).parent.parent
+from lib.constants import ALVA_MOPAC_DESC_N, LOG_N
 
 
 def change_keywords(
@@ -193,11 +192,11 @@ def calc_mopac_desc(filename: Path, json_path: str | Path):
     try:
         existing_data = json.loads(json_path.read_text())
         existing_data.update(detailed_dict)
-        new_path = json_path.parent / "AlvaDesc_and_mopacDesc.json"
+        new_path = json_path.parent / ALVA_MOPAC_DESC_N
         new_path.write_text(json.dumps(existing_data, indent=4))
         return detailed_dict
     except Exception as e:
-        err_file = json_path.parents[2] / "err.err"
+        err_file = json_path.parents[2] / LOG_N
         with open(err_file, "a", encoding="utf-8") as f:
             f.write(f"{e}\n")
         return None

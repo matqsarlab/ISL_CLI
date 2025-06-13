@@ -4,21 +4,19 @@ from alvaDescCLIWrapper.alvadesccliwrapper.alvadesc import AlvaDesc
 from lib.helper_functions import (
     generate_descriptors,
     write_descriptors_to_json,
-    DIR_UP_PATH,
 )
-
-ALVA_DESC_N = "alvaDescriptors.json"
+from lib.constants import DIR_UP_P, ALVA_DESC_N
 
 
 def alva_desc(filename: str):
     """ """
     match sys.platform:
         case "darwin":  # macOS
-            alva_path = DIR_UP_PATH / "AlvaDesc_MacOS" / "alvaDescCLI"
+            alva_path = DIR_UP_P / "AlvaDesc_MacOS" / "alvaDescCLI"
         case "linux" | "linux2":
-            alva_path = DIR_UP_PATH / "AlvaDesc_Linux" / "bin " / "alvaDescCLI"
+            alva_path = DIR_UP_P / "AlvaDesc_Linux" / "bin " / "alvaDescCLI"
         case "win32":
-            alva_path = DIR_UP_PATH / "AlvaDesc_Windows" / "alvaDescCLI.exe"
+            alva_path = DIR_UP_P / "AlvaDesc_Windows" / "alvaDescCLI.exe"
         case _:
             raise OSError(f"Unsupported operating system: {sys.platform}")
     aDesc = AlvaDesc(str(alva_path))
@@ -36,11 +34,11 @@ def alva_desc(filename: str):
 def run_mop(filename: str) -> str:
     match sys.platform:
         case "darwin":  # macOS
-            mopac_path = DIR_UP_PATH / "mopac_mac" / "bin" / "mopac"
+            mopac_path = DIR_UP_P / "mopac_mac" / "bin" / "mopac"
         case "linux" | "linux2":
-            mopac_path = DIR_UP_PATH / "mopac_linux" / "bin" / "mopac"
+            mopac_path = DIR_UP_P / "mopac_linux" / "bin" / "mopac"
         case "win32":
-            mopac_path = DIR_UP_PATH / "mopac_windows" / "bin" / "mopac.exe"
+            mopac_path = DIR_UP_P / "mopac_windows" / "bin" / "mopac.exe"
         case _:
             raise OSError(f"Unsupported operating system: {sys.platform}")
     mopac_command = f'{mopac_path} "{filename}"'
