@@ -5,18 +5,18 @@ from lib.helper_functions import (
     generate_descriptors,
     write_descriptors_to_json,
 )
-from lib.constants import DIR_UP_P, ALVA_DESC_N
+from lib.constants import PROJECT_ROOT_P, ALVA_DESC_FILE_N
 
 
 def alva_desc(filename: str):
     """ """
     match sys.platform:
         case "darwin":  # macOS
-            alva_path = DIR_UP_P / "AlvaDesc_MacOS" / "alvaDescCLI"
+            alva_path = PROJECT_ROOT_P / "AlvaDesc_MacOS" / "alvaDescCLI"
         case "linux" | "linux2":
-            alva_path = DIR_UP_P / "AlvaDesc_Linux" / "bin " / "alvaDescCLI"
+            alva_path = PROJECT_ROOT_P / "AlvaDesc_Linux" / "bin " / "alvaDescCLI"
         case "win32":
-            alva_path = DIR_UP_P / "AlvaDesc_Windows" / "alvaDescCLI.exe"
+            alva_path = PROJECT_ROOT_P / "AlvaDesc_Windows" / "alvaDescCLI.exe"
         case _:
             raise OSError(f"Unsupported operating system: {sys.platform}")
     aDesc = AlvaDesc(str(alva_path))
@@ -27,18 +27,18 @@ def alva_desc(filename: str):
     res_out = aDesc.get_output()
     res_desc_names = aDesc.get_output_descriptors()
     gen = generate_descriptors(res_out, res_desc_names, "alvaDesc v2.0.16")
-    write_descriptors_to_json(ALVA_DESC_N, gen)
+    write_descriptors_to_json(ALVA_DESC_FILE_N, gen)
     return None
 
 
 def run_mop(filename: str) -> str:
     match sys.platform:
         case "darwin":  # macOS
-            mopac_path = DIR_UP_P / "mopac_mac" / "bin" / "mopac"
+            mopac_path = PROJECT_ROOT_P / "mopac_mac" / "bin" / "mopac"
         case "linux" | "linux2":
-            mopac_path = DIR_UP_P / "mopac_linux" / "bin" / "mopac"
+            mopac_path = PROJECT_ROOT_P / "mopac_linux" / "bin" / "mopac"
         case "win32":
-            mopac_path = DIR_UP_P / "mopac_windows" / "bin" / "mopac.exe"
+            mopac_path = PROJECT_ROOT_P / "mopac_windows" / "bin" / "mopac.exe"
         case _:
             raise OSError(f"Unsupported operating system: {sys.platform}")
     mopac_command = f'{mopac_path} "{filename}"'

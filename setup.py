@@ -5,7 +5,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="ISL",
-    version="0.1.0",
+    version="0.2.0",
     py_modules=["isl"],
     packages=find_packages(include=["lib", "alvaDescCLIWrapper"]),
     install_requires=requirements,

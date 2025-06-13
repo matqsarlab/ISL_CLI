@@ -10,8 +10,16 @@ from lib.helper_functions import (
     convert_to_canonical_smiles,
     calc_mopac_desc,
 )
-from lib.run_software_calc import alva_desc, run_mop, ALVA_DESC_N
-from lib.constants import LOG_N, BASE_DIR_P
+from lib.run_software_calc import alva_desc, run_mop
+from lib.constants import (
+    LOG_FILE_N,
+    BASE_DIR_P,
+    ALVA_DESC_FILE_N,
+    ALVA_MOPAC_DESC_FILE_N,
+    MOPAC_OUT_FILE_N,
+    MOLEC_SMI_FILE_N,
+    MOLEC_CANON_SMI_FILE_N,
+)
 from pathlib import Path
 from functools import cached_property
 from contextlib import chdir
@@ -28,8 +36,8 @@ class ComputeDescriptors:
         self.input_path = Path(input_path)
         self.output_dir = Path(output_dir)
         self.output_file_name = self.output_dir / out_file_name
-        self.molec_smi = "molec.smi"
-        self.molec_canon_smi = "molec_canon.smi"
+        self.molec_smi = MOLEC_SMI_FILE_N
+        self.molec_canon_smi = MOLEC_CANON_SMI_FILE_N
         self.all_data = []
         self.y_unit = str(self.smi_df.columns[0])
         self.y_file_name = self.safe_path_name(self.y_unit)
@@ -89,10 +97,10 @@ class ComputeDescriptors:
                     yval.write(yval2str)
 
     def _calc_descr(self) -> None:
-        self.error_logger = self._setup_logger(self.output_dir / LOG_N)
+        self.error_logger = self._setup_logger(self.output_dir / LOG_FILE_N)
         ROOT_DIR_P = Path(self.output_dir)
         PARENT_DIR_P = ROOT_DIR_P.parent
-        for alva_path in ROOT_DIR_P.rglob(ALVA_DESC_N):
+        for alva_path in ROOT_DIR_P.rglob(ALVA_DESC_FILE_N):
             molecule_record = self._process_molecule_data(alva_path)
             if molecule_record is not None:
                 self.all_data.append(molecule_record)
@@ -104,8 +112,8 @@ class ComputeDescriptors:
 
     def _process_molecule_data(self, alva_path: Path) -> Optional[Dict[str, Any]]:
         dir_path = alva_path.parent
-        alvMopac_path = dir_path / "alvaDesc_and_mopacDesc.json"
-        out2_path = dir_path / "out.out"
+        alvMopac_path = dir_path / ALVA_MOPAC_DESC_FILE_N
+        out2_path = dir_path / MOPAC_OUT_FILE_N
         smi_path = dir_path / self.molec_smi
         smi_can_path = dir_path / self.molec_canon_smi
         y_path = dir_path / self.y_file_name
@@ -120,7 +128,9 @@ class ComputeDescriptors:
                 return None
 
             if not out2_path.exists():
-                raise FileNotFoundError(f"Plik out.out nie znaleziony: {out2_path}")
+                raise FileNotFoundError(
+                    f"Plik {MOPAC_OUT_FILE_N} nie znaleziony: {out2_path}"
+                )
 
             calc_mopac_desc(out2_path, alva_path)
 
