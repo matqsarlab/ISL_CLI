@@ -14,7 +14,7 @@ def alva_desc(filename: str):
         case "darwin":  # macOS
             alva_path = PROJECT_ROOT_P / "AlvaDesc_MacOS" / "alvaDescCLI"
         case "linux" | "linux2":
-            alva_path = PROJECT_ROOT_P / "AlvaDesc_Linux" / "bin " / "alvaDescCLI"
+            alva_path = PROJECT_ROOT_P / "AlvaDesc_Linux" / "bin" / "alvaDescCLI"
         case "win32":
             alva_path = PROJECT_ROOT_P / "AlvaDesc_Windows" / "alvaDescCLI.exe"
         case _:
